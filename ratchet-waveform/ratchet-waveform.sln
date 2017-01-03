@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ratchet-waveform", "ratchet-waveform\ratchet-waveform.csproj", "{DD7E8603-9E85-4553-835F-B599649FA139}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{15CA29A1-F50D-49C2-9C24-928F732BFF4F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "To8Bits", "..\Samples\To8Bits\To8Bits.csproj", "{3C90BD8D-2AB3-4A11-8DCE-D5DB52249CAF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DD7E8603-9E85-4553-835F-B599649FA139}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DD7E8603-9E85-4553-835F-B599649FA139}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DD7E8603-9E85-4553-835F-B599649FA139}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DD7E8603-9E85-4553-835F-B599649FA139}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C90BD8D-2AB3-4A11-8DCE-D5DB52249CAF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C90BD8D-2AB3-4A11-8DCE-D5DB52249CAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C90BD8D-2AB3-4A11-8DCE-D5DB52249CAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C90BD8D-2AB3-4A11-8DCE-D5DB52249CAF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{3C90BD8D-2AB3-4A11-8DCE-D5DB52249CAF} = {15CA29A1-F50D-49C2-9C24-928F732BFF4F}
+	EndGlobalSection
+EndGlobal
