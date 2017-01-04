@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "To8Bits", "..\Samples\To8Bi
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Builds", "Builds", "{B9F14AD9-9736-4789-BEBC-963B97631D76}"
 	ProjectSection(SolutionItems) = preProject
-		Ratchet.IO.Format.Waveform.nuspec = Ratchet.IO.Format.Waveform.nuspec
+		..\Build\Ratchet.IO.Format.Waveform.nuspec = ..\Build\Ratchet.IO.Format.Waveform.nuspec
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ratchet-waveform-net40", "..\Build\ratchet-waveform-net40\ratchet-waveform-net40.csproj", "{CF07C1F2-2A4C-49A9-8903-2FCA735BAD55}"
