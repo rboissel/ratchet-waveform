@@ -9,6 +9,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{15CA
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "To8Bits", "..\Samples\To8Bits\To8Bits.csproj", "{3C90BD8D-2AB3-4A11-8DCE-D5DB52249CAF}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Builds", "Builds", "{B9F14AD9-9736-4789-BEBC-963B97631D76}"
+	ProjectSection(SolutionItems) = preProject
+		Ratchet.IO.Format.Waveform.nuspec = Ratchet.IO.Format.Waveform.nuspec
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ratchet-waveform-net40", "..\Build\ratchet-waveform-net40\ratchet-waveform-net40.csproj", "{CF07C1F2-2A4C-49A9-8903-2FCA735BAD55}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ratchet-waveform-net45", "..\Build\ratchet-waveform-net45\ratchet-waveform-net45.csproj", "{912ECE0F-542E-45FA-B393-6C1ED98FA999}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,11 +32,21 @@ Global
 		{3C90BD8D-2AB3-4A11-8DCE-D5DB52249CAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3C90BD8D-2AB3-4A11-8DCE-D5DB52249CAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3C90BD8D-2AB3-4A11-8DCE-D5DB52249CAF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF07C1F2-2A4C-49A9-8903-2FCA735BAD55}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF07C1F2-2A4C-49A9-8903-2FCA735BAD55}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF07C1F2-2A4C-49A9-8903-2FCA735BAD55}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF07C1F2-2A4C-49A9-8903-2FCA735BAD55}.Release|Any CPU.Build.0 = Release|Any CPU
+		{912ECE0F-542E-45FA-B393-6C1ED98FA999}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{912ECE0F-542E-45FA-B393-6C1ED98FA999}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{912ECE0F-542E-45FA-B393-6C1ED98FA999}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{912ECE0F-542E-45FA-B393-6C1ED98FA999}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{3C90BD8D-2AB3-4A11-8DCE-D5DB52249CAF} = {15CA29A1-F50D-49C2-9C24-928F732BFF4F}
+		{CF07C1F2-2A4C-49A9-8903-2FCA735BAD55} = {B9F14AD9-9736-4789-BEBC-963B97631D76}
+		{912ECE0F-542E-45FA-B393-6C1ED98FA999} = {B9F14AD9-9736-4789-BEBC-963B97631D76}
 	EndGlobalSection
 EndGlobal
