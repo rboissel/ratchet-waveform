@@ -287,8 +287,8 @@ namespace Ratchet.IO.Format
             uint BytePerSample = BitPerSample / 8;
             if (BytePerSample * 8 != BitPerSample) { throw new System.IO.InvalidDataException("Invalid BitPerSample: " + BitPerSample.ToString()); }
             if (BytePerSample != 1 && BytePerSample != 2 && BytePerSample != 4) { throw new System.IO.InvalidDataException("Invalid BitPerSample: " + BitPerSample.ToString()); }
-            uint data = BitConverter.ToUInt16(Waveform, Offset);
-            while (data != 0x61746164 && Offset < Waveform.Length) { Offset += 4; data = BitConverter.ToUInt16(Waveform, Offset); }
+            uint data = BitConverter.ToUInt32(Waveform, Offset);
+            while (data != 0x61746164 && Offset + 4 < Waveform.Length) { Offset += 4; data = BitConverter.ToUInt32(Waveform, Offset); }
             if (Offset >= Waveform.Length) { throw new System.IO.InvalidDataException("Missing Data chunk"); }
             Offset += 4;
             uint dataSize = BitConverter.ToUInt32(Waveform, Offset); Offset += 4;
