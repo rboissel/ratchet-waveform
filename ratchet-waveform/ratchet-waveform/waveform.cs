@@ -100,7 +100,7 @@ namespace Ratchet.IO.Format
 
             public Sound(uint SampleRate)
             {
-                if (typeof(T) != typeof(Byte) && typeof(T) != typeof(UInt16) && typeof(T) != typeof(UInt32)) { throw new System.IO.InvalidDataException("Sample type must be: Byte, Uint16, UInt32"); }
+                if (typeof(T) != typeof(Byte) && typeof(T) != typeof(Int16) && typeof(T) != typeof(Int32)) { throw new System.IO.InvalidDataException("Sample type must be: Byte, Int16, Int32"); }
                 _SampleRate = SampleRate;
             }
         }
@@ -125,7 +125,7 @@ namespace Ratchet.IO.Format
 
         }
 
-        static void Write16BitsSound(System.IO.BinaryWriter output, Sound<ushort> Sound)
+        static void Write16BitsSound(System.IO.BinaryWriter output, Sound<short> Sound)
         {
             uint size = 44 + (uint)Sound.Channels.Count * (uint)Sound.Length * 2 - 8;
             output.Write(size);
@@ -145,7 +145,7 @@ namespace Ratchet.IO.Format
             output.Flush();
         }
 
-        static void Write32BitsSound(System.IO.BinaryWriter output, Sound<uint> Sound)
+        static void Write32BitsSound(System.IO.BinaryWriter output, Sound<int> Sound)
         {
             uint size = 44 + (uint)Sound.Channels.Count * (uint)Sound.Channels[0].Length * 4 - 8;
             output.Write(size);
@@ -170,8 +170,8 @@ namespace Ratchet.IO.Format
             System.IO.BinaryWriter output = new System.IO.BinaryWriter(Stream);
             output.Write('R'); output.Write('I'); output.Write('F'); output.Write('F');
             if (typeof(T) == typeof(Byte)) { Write8BitsSound(output, Sound as Sound<byte>); }
-            else if (typeof(T) == typeof(UInt16)) { Write16BitsSound(output, Sound as Sound<ushort>); }
-            else if (typeof(T) == typeof(UInt32)) { Write32BitsSound(output, Sound as Sound<uint>); }
+            else if (typeof(T) == typeof(Int16)) { Write16BitsSound(output, Sound as Sound<short>); }
+            else if (typeof(T) == typeof(Int32)) { Write32BitsSound(output, Sound as Sound<int>); }
         }
 
         public static Sound<T> Read<T>(byte[] Waveform)
@@ -187,7 +187,7 @@ namespace Ratchet.IO.Format
         /// <returns>The loaded sound</returns>
         public static Sound<T> Read<T>(System.IO.Stream Stream)
         {
-            if (typeof(T) != typeof(Byte) && typeof(T) != typeof(UInt16) && typeof(T) != typeof(UInt32)) { throw new System.IO.InvalidDataException("Sample type must be: Byte, Uint16, UInt32"); }
+            if (typeof(T) != typeof(Byte) && typeof(T) != typeof(Int16) && typeof(T) != typeof(Int32)) { throw new System.IO.InvalidDataException("Sample type must be: Byte, Int16, Int32"); }
             System.IO.BinaryReader reader = new System.IO.BinaryReader(Stream);
             uint riff = reader.ReadUInt32();
             if (riff != 0x46464952) { throw new System.IO.InvalidDataException("Invalid Magik number"); }
@@ -220,7 +220,7 @@ namespace Ratchet.IO.Format
                     case 4: return WaveformPcm.Read32BitsPCMAs8BitsPCM(soundData, channelCount, sampleCount, SampleRate, 0) as Sound<T>;
                 }
             }
-            else if (typeof(T) == typeof(UInt16))
+            else if (typeof(T) == typeof(Int16))
             {
                 switch (BytePerSample)
                 {
@@ -229,7 +229,7 @@ namespace Ratchet.IO.Format
                     case 4: return WaveformPcm.Read32BitsPCMAs16BitsPCM(soundData, channelCount, sampleCount, SampleRate, 0) as Sound<T>;
                 }
             }
-            else if (typeof(T) == typeof(UInt32))
+            else if (typeof(T) == typeof(Int32))
             {
                 switch (BytePerSample)
                 {
@@ -252,7 +252,7 @@ namespace Ratchet.IO.Format
         /// <returns>The loaded sound</returns>
         public static Sound<T> Read<T>(byte[] Waveform, int Offset)
         {
-            if (typeof(T) != typeof(Byte) && typeof(T) != typeof(UInt16) && typeof(T) != typeof(UInt32)) { throw new System.IO.InvalidDataException("Sample type must be: Byte, Uint16, UInt32"); }
+            if (typeof(T) != typeof(Byte) && typeof(T) != typeof(Int16) && typeof(T) != typeof(Int32)) { throw new System.IO.InvalidDataException("Sample type must be: Byte, Int16, Int32"); }
             if (Waveform.Length + Offset < 22) { throw new System.IO.InvalidDataException(); }
 
             if (Waveform[Offset] == 'R')
@@ -289,7 +289,7 @@ namespace Ratchet.IO.Format
             if (BytePerSample != 1 && BytePerSample != 2 && BytePerSample != 4) { throw new System.IO.InvalidDataException("Invalid BitPerSample: " + BitPerSample.ToString()); }
             uint data = BitConverter.ToUInt32(Waveform, Offset);
             while (data != 0x61746164 && Offset + 4 < Waveform.Length) { Offset += 4; data = BitConverter.ToUInt32(Waveform, Offset); }
-            if (Offset >= Waveform.Length) { throw new System.IO.InvalidDataException("Missing Data chunk"); }
+            if (Offset + 4 >= Waveform.Length) { throw new System.IO.InvalidDataException("Missing Data chunk"); }
             Offset += 4;
             uint dataSize = BitConverter.ToUInt32(Waveform, Offset); Offset += 4;
             uint sampleCount = dataSize / ((uint)channelCount * BytePerSample);
@@ -304,7 +304,7 @@ namespace Ratchet.IO.Format
                     case 4: return WaveformPcm.Read32BitsPCMAs8BitsPCM(Waveform, channelCount, sampleCount, SampleRate, Offset) as Sound<T>;
                 }
             }
-            else if (typeof(T) == typeof(UInt16))
+            else if (typeof(T) == typeof(Int16))
             {
                 switch (BytePerSample)
                 {
@@ -313,7 +313,7 @@ namespace Ratchet.IO.Format
                     case 4: return WaveformPcm.Read32BitsPCMAs16BitsPCM(Waveform, channelCount, sampleCount, SampleRate, Offset) as Sound<T>;
                 }
             }
-            else if (typeof(T) == typeof(UInt32))
+            else if (typeof(T) == typeof(Int32))
             {
                 switch (BytePerSample)
                 {

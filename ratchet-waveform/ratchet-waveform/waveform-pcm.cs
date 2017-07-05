@@ -30,7 +30,7 @@ using System.Threading.Tasks;
 
 namespace Ratchet.IO.Format
 {
-    static class WaveformPcm
+    static unsafe class WaveformPcm
     {
         static internal Waveform.Sound<byte> Read8BitsPCM(byte[]Data, int ChannelCount, uint SampleCount, uint SampleRate, int Offset)
         {
@@ -62,7 +62,8 @@ namespace Ratchet.IO.Format
             {
                 for (int c = 0; c < ChannelCount; c++, Offset += 2)
                 {
-                    data[c][n] = Data[Offset + 1];
+                    if (Data[Offset + 1] >= 0x80) { data[c][n] = (byte)(Data[Offset + 1] & 0x7F); }
+                    else { data[c][n] = (byte)(Data[Offset + 1] & 0x80); }
                 }
             }
             Waveform.Sound<byte> sound = new Waveform.Sound<byte>(SampleRate);
@@ -84,7 +85,8 @@ namespace Ratchet.IO.Format
             {
                 for (int c = 0; c < ChannelCount; c++, Offset += 4)
                 {
-                    data[c][n] = Data[Offset + 3];
+                    if (Data[Offset + 3] >= 0x80) { data[c][n] = (byte)(Data[Offset + 3] & 0x7F); }
+                    else { data[c][n] = (byte)(Data[Offset + 3] & 0x80); }
                 }
             }
             Waveform.Sound<byte> sound = new Waveform.Sound<byte>(SampleRate);
@@ -98,21 +100,22 @@ namespace Ratchet.IO.Format
             return sound;
         }
 
-        static internal Waveform.Sound<ushort> Read8BitsPCMAs16BitsPCM(byte[] Data, int ChannelCount, uint SampleCount, uint SampleRate, int Offset)
+        static internal Waveform.Sound<short> Read8BitsPCMAs16BitsPCM(byte[] Data, int ChannelCount, uint SampleCount, uint SampleRate, int Offset)
         {
-            ushort[][] data = new ushort[ChannelCount][];
-            for (int n = 0; n < ChannelCount; n++) { data[n] = new ushort[SampleCount]; }
+            short[][] data = new short[ChannelCount][];
+            for (int n = 0; n < ChannelCount; n++) { data[n] = new short[SampleCount]; }
             for (uint n = 0; n < SampleCount; n++)
             {
                 for (int c = 0; c < ChannelCount; c++, Offset++)
                 {
-                    data[c][n] = (ushort)((ushort)Data[Offset] * (ushort)0x100);
+                    if (data[c][n] > 0x80) { data[c][n] = (short)(-((short)data[c][n] - 0x80) * (short)0x100); }
+                    else { data[c][n] = (short)((short)Data[Offset] * (short)0x100); }
                 }
             }
-            Waveform.Sound<ushort> sound = new Waveform.Sound<ushort>(SampleRate);
+            Waveform.Sound<short> sound = new Waveform.Sound<short>(SampleRate);
             for (int n = 0; n < ChannelCount; n++)
             {
-                Waveform.Channel<ushort> channel = new Waveform.Channel<ushort>();
+                Waveform.Channel<short> channel = new Waveform.Channel<short>();
                 channel._Samples = data[n];
                 sound.Channels.Add(channel);
             }
@@ -120,21 +123,27 @@ namespace Ratchet.IO.Format
             return sound;
         }
 
-        static internal Waveform.Sound<ushort> Read16BitsPCM(byte[] Data, int ChannelCount, uint SampleCount, uint SampleRate, int Offset)
+        static internal Waveform.Sound<short> Read16BitsPCM(byte[] Data, int ChannelCount, uint SampleCount, uint SampleRate, int Offset)
         {
-            ushort[][] data = new ushort[ChannelCount][];
-            for (int n = 0; n < ChannelCount; n++) { data[n] = new ushort[SampleCount]; }
-            for (uint n = 0; n < SampleCount; n++)
+            short[][] data = new short[ChannelCount][];
+            for (int n = 0; n < ChannelCount; n++) { data[n] = new short[SampleCount]; }
+            fixed (byte* pDataB = &Data[0])
             {
-                for (int c = 0; c < ChannelCount; c++, Offset+=2)
+                short* pData = (short*)pDataB;
+                for (uint n = 0; n < SampleCount; n++)
                 {
-                    data[c][n] = (ushort)((ushort)Data[Offset] + (ushort)Data[Offset + 1] * (ushort)0x100);
+                    for (int c = 0; c < ChannelCount; c++, Offset += 2)
+                    {
+                        data[c][n] = *pData;
+                        pData++;
+                    }
                 }
             }
-            Waveform.Sound<ushort> sound = new Waveform.Sound<ushort>(SampleRate);
+
+            Waveform.Sound<short> sound = new Waveform.Sound<short>(SampleRate);
             for (int n = 0; n < ChannelCount; n++)
             {
-                Waveform.Channel<ushort> channel = new Waveform.Channel<ushort>();
+                Waveform.Channel<short> channel = new Waveform.Channel<short>();
                 channel._Samples = data[n];
                 sound.Channels.Add(channel);
             }
@@ -142,21 +151,27 @@ namespace Ratchet.IO.Format
             return sound;
         }
 
-        static internal Waveform.Sound<ushort> Read32BitsPCMAs16BitsPCM(byte[] Data, int ChannelCount, uint SampleCount, uint SampleRate, int Offset)
+        static internal Waveform.Sound<short> Read32BitsPCMAs16BitsPCM(byte[] Data, int ChannelCount, uint SampleCount, uint SampleRate, int Offset)
         {
-            ushort[][] data = new ushort[ChannelCount][];
-            for (int n = 0; n < ChannelCount; n++) { data[n] = new ushort[SampleCount]; }
-            for (uint n = 0; n < SampleCount; n++)
+            short[][] data = new short[ChannelCount][];
+            for (int n = 0; n < ChannelCount; n++) { data[n] = new short[SampleCount]; }
+            fixed (byte* pDataB = &Data[2])
             {
-                for (int c = 0; c < ChannelCount; c++, Offset += 4)
+                short* pData = (short*)pDataB;
+                for (uint n = 0; n < SampleCount; n++)
                 {
-                    data[c][n] = (ushort)((ushort)Data[Offset + 2] + (ushort)Data[Offset + 3] * 0x100);
+                    for (int c = 0; c < ChannelCount; c++, Offset += 4)
+                    {
+                        data[c][n] = *pData;
+                        pData++;
+                    }
                 }
             }
-            Waveform.Sound<ushort> sound = new Waveform.Sound<ushort>(SampleRate);
+
+            Waveform.Sound<short> sound = new Waveform.Sound<short>(SampleRate);
             for (int n = 0; n < ChannelCount; n++)
             {
-                Waveform.Channel<ushort> channel = new Waveform.Channel<ushort>();
+                Waveform.Channel<short> channel = new Waveform.Channel<short>();
                 channel._Samples = data[n];
                 sound.Channels.Add(channel);
             }
@@ -165,21 +180,22 @@ namespace Ratchet.IO.Format
         }
 
 
-        static internal Waveform.Sound<uint> Read8BitsPCMAs32BitsPCM(byte[] Data, int ChannelCount, uint SampleCount, uint SampleRate, int Offset)
+        static internal Waveform.Sound<int> Read8BitsPCMAs32BitsPCM(byte[] Data, int ChannelCount, uint SampleCount, uint SampleRate, int Offset)
         {
-            uint[][] data = new uint[ChannelCount][];
-            for (int n = 0; n < ChannelCount; n++) { data[n] = new uint[SampleCount]; }
+            int[][] data = new int[ChannelCount][];
+            for (int n = 0; n < ChannelCount; n++) { data[n] = new int[SampleCount]; }
             for (uint n = 0; n < SampleCount; n++)
             {
                 for (int c = 0; c < ChannelCount; c++, Offset++)
                 {
-                    data[c][n] = Data[Offset];
+                    if (data[c][n] > 0x80) { data[c][n] = (int)(-((int)data[c][n] - 0x80) * (int)0x1000000); }
+                    else { data[c][n] = (int)((int)Data[Offset] * (int)0x1000000); }
                 }
             }
-            Waveform.Sound<uint> sound = new Waveform.Sound<uint>(SampleRate);
+            Waveform.Sound<int> sound = new Waveform.Sound<int>(SampleRate);
             for (int n = 0; n < ChannelCount; n++)
             {
-                Waveform.Channel<uint> channel = new Waveform.Channel<uint>();
+                Waveform.Channel<int> channel = new Waveform.Channel<int>();
                 channel._Samples = data[n];
                 sound.Channels.Add(channel);
             }
@@ -209,21 +225,27 @@ namespace Ratchet.IO.Format
             return sound;
         }
 
-        static internal Waveform.Sound<uint> Read32BitsPCM(byte[] Data, int ChannelCount, uint SampleCount, uint SampleRate, int Offset)
+        static internal Waveform.Sound<int> Read32BitsPCM(byte[] Data, int ChannelCount, uint SampleCount, uint SampleRate, int Offset)
         {
-            uint[][] data = new uint[ChannelCount][];
-            for (int n = 0; n < ChannelCount; n++) { data[n] = new uint[SampleCount]; }
-            for (uint n = 0; n < SampleCount; n++)
+            int[][] data = new int[ChannelCount][];
+            for (int n = 0; n < ChannelCount; n++) { data[n] = new int[SampleCount]; }
+            fixed (byte* pDataB = &Data[0])
             {
-                for (int c = 0; c < ChannelCount; c++, Offset+=4)
+                short* pData = (short*)pDataB;
+                for (uint n = 0; n < SampleCount; n++)
                 {
-                    data[c][n] = (uint)Data[Offset] + (uint)Data[Offset + 1] * 0x100 + (uint)Data[Offset + 2] * 0x10000 + (uint)Data[Offset + 3] * 0x1000000;
+                    for (int c = 0; c < ChannelCount; c++, Offset += 2)
+                    {
+                        data[c][n] = *pData;
+                        pData++;
+                    }
                 }
             }
-            Waveform.Sound<uint> sound = new Waveform.Sound<uint>(SampleRate);
+
+            Waveform.Sound<int> sound = new Waveform.Sound<int>(SampleRate);
             for (int n = 0; n < ChannelCount; n++)
             {
-                Waveform.Channel<uint> channel = new Waveform.Channel<uint>();
+                Waveform.Channel<int> channel = new Waveform.Channel<int>();
                 channel._Samples = data[n];
                 sound.Channels.Add(channel);
             }
@@ -245,7 +267,7 @@ namespace Ratchet.IO.Format
             }
         }
 
-        static internal void Write16BitsPCM(List<Waveform.Channel<ushort>> Channels, System.IO.BinaryWriter Output)
+        static internal void Write16BitsPCM(List<Waveform.Channel<short>> Channels, System.IO.BinaryWriter Output)
         {
             int ChannelCount = Channels.Count;
             int SampleCount = Channels[0].Length;
@@ -259,7 +281,7 @@ namespace Ratchet.IO.Format
             }
         }
 
-        static internal void Write32BitsPCM(List<Waveform.Channel<uint>> Channels, System.IO.BinaryWriter Output)
+        static internal void Write32BitsPCM(List<Waveform.Channel<int>> Channels, System.IO.BinaryWriter Output)
         {
             int ChannelCount = Channels.Count;
             int SampleCount = Channels[0].Length;

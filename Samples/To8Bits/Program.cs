@@ -18,7 +18,7 @@ namespace To8Bits
 
             // Open the source file
             System.IO.Stream fileStream = System.IO.File.Open(args[0], System.IO.FileMode.Open);
-            Ratchet.IO.Format.Waveform.Sound<UInt16> sound = Ratchet.IO.Format.Waveform.Read<UInt16>(fileStream);
+            Ratchet.IO.Format.Waveform.Sound<Int16> sound = Ratchet.IO.Format.Waveform.Read<Int16>(fileStream);
             fileStream.Close();
             Ratchet.IO.Format.Waveform.Sound<byte> _8bitssound = new Ratchet.IO.Format.Waveform.Sound<byte>(8000);
 
@@ -45,10 +45,11 @@ namespace To8Bits
                     else
                     {
 
-                        ulong sum = 0;
+                        long sum = 0;
                         for (int x = targetSample; x < nextTargetSample; x++) { sum += sound.Channels[c].Samples[x]; }
-                        sum /= (ulong)(nextTargetSample - targetSample);
-
+                        sum /= (long)(nextTargetSample - targetSample);
+                        sum += short.MaxValue;
+                        if (sum > ushort.MaxValue) { sum = ushort.MaxValue; }
                         channelData[n] = (byte)(sum >> 8);
                     }
                 }
