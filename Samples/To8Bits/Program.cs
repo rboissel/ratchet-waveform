@@ -15,10 +15,11 @@ namespace To8Bits
                 System.Console.WriteLine("Usage: To8Bits.exe input.wav output.wav");
                 System.Environment.Exit(1);
             }
-            string file = args[0];
-            byte[] data = System.IO.File.ReadAllBytes(file);
 
-            Ratchet.IO.Format.Waveform.Sound<UInt16> sound = Ratchet.IO.Format.Waveform.Read<UInt16>(data);
+            // Open the source file
+            System.IO.Stream fileStream = System.IO.File.Open(args[0], System.IO.FileMode.Open);
+            Ratchet.IO.Format.Waveform.Sound<UInt16> sound = Ratchet.IO.Format.Waveform.Read<UInt16>(fileStream);
+            fileStream.Close();
             Ratchet.IO.Format.Waveform.Sound<byte> _8bitssound = new Ratchet.IO.Format.Waveform.Sound<byte>(8000);
 
             float sampleRatio = sound.SampleRate / _8bitssound.SampleRate;

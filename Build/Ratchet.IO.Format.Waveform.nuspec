@@ -13,6 +13,6 @@
     <description>Ratchet Waveform is a library part of the ratchet project that can be used to load an create waveform files (.wav files)</description>
     <copyright>Copyright ©2017 Raphael Boissel</copyright>
     <language>en-US</language>
-    <tags>ratchet audio sound music wav wave wavefront riff loader</tags>
+    <tags>ratchet audio sound music wav wave waveform riff loader</tags>
   </metadata>
 </package>
