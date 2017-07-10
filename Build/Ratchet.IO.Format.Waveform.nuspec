@@ -7,7 +7,7 @@
     <owners>rboissel</owners>
     <licenseUrl>https://opensource.org/licenses/MIT</licenseUrl>
     <projectUrl>https://github.com/rboissel/ratchet-waveform</projectUrl>
-    <iconUrl>https://github.com/rboissel/ratchet-waveform/icon.png</iconUrl>
+    <iconUrl>https://raw.githubusercontent.com/rboissel/ratchet/master/icon.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <releaseNotes></releaseNotes>
     <description>Ratchet Waveform is a library part of the ratchet project that can be used to load an create waveform files (.wav files)</description>
